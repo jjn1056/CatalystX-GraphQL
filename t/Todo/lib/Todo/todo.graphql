@@ -1,0 +1,12 @@
+type Todo {
+  task: String!
+}
+
+type Query {
+  todos: [Todo]
+}
+
+type Mutation {
+  add_todo(task: String!): Todo
+}
+

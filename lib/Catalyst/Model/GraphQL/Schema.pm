@@ -9,8 +9,8 @@ sub COMPONENT {
   my ( $class, $c ) = @_;
   my $arguments = ( ref( $_[-1] ) eq 'HASH' ) ? $_[-1] : {};
 
-  if(my $source = $arguments->{source}) {
-    return $class->coerce_schema($source);
+  if(my $from = $arguments->{from}) {
+    return $class->coerce_schema($from);
   } else {
     return GraphQL::Schema->new($arguments);
   }
@@ -18,10 +18,10 @@ sub COMPONENT {
 
 sub coerce_schema {
   my $class = shift;
-  my $source = Plack::Util::is_real_fh($_[0]) ?
+  my $from = Plack::Util::is_real_fh($_[0]) ?
     do { local $/ = undef; <$_[0]> } : 
       $_[0];
-  return GraphQL::Schema->from_doc($source);
+  return GraphQL::Schema->from_doc($from);
 }
 
 1;

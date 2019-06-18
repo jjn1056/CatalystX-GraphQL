@@ -43,9 +43,10 @@ has schema => (
 );
 
   sub coerce_schema {
-    my $source = Plack::Util::is_real_fh($_[0]) ?
-      do { local $/ = undef; <$_[0]> } : 
-        $_[0];
+    my $source = shift;
+    $source = Plack::Util::is_real_fh($source) ?
+      do { local($/); <$source> } : 
+        $source;
     return Plack::Util::load_class("GraphQL::Schema")
       ->from_doc($source);
   }
